@@ -1,18 +1,37 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Xml.Schema;
 // See https://aka.ms/new-console-template for more information
 
 
 namespace Zoo
 {
+    //Used a separate interface for zoo
+    interface IZoo
+    {
+        Animal this[int i] { get; set; }    
+        string zooName { get; set; }
+    }
+
+    public class Zoo : IZoo
+    {
+        //indexer
+        public Animal[] animals = new Animal[100];
+        public Animal this[int i]
+        {
+            get { return animals[i]; }
+            set { animals[i] = value; }
+        }
+        public string zooName { get; set; } = "";
+    }
+
     interface IAnimal
     {
         //properties
         string Name { get; set; }
         string Description { get; set; }
         int Quantity { get; set; }
-        public string[] illnesses { get; set; }
 
         public void addQuantity(int q);
         public void removeQuantity(int q);
@@ -24,13 +43,6 @@ namespace Zoo
         public string Name { get; set; } = "";
         public string Description { get; set; } = "";
         public int Quantity { get; set; } = 0;
-        public string[] illnesses { get; set; } = new string[100];
-
-        public string this[int i]
-        {
-            get { return illnesses[i]; }
-            set { illnesses[i] = value; }
-        }
 
         //instance methods
         public void addQuantity(int q)
@@ -83,18 +95,41 @@ namespace Zoo
     class Program
     {
         static void Main(string[] args)
-        {   
+        {
+            Zoo zoo = new Zoo();
+            zoo.zooName = "Wildlife Emporium";
+            
             //class declarations
-            var lion = new Animal();
+
             //property definitions
+            var lion = new Animal();
             lion.Name = "Lion";
             lion.Description = "I am a lion.";
-            lion.Quantity = 3;
-            lion.illnesses[0] = "none";
+            lion.Quantity = 5;
+
+            var tiger = new Animal();
+            tiger.Name = "Tiger";
+            tiger.Description = "I am a tiger.";
+            tiger.Quantity = 4;
+
+            var seal = new Animal();
+            seal.Name = "Seal";
+            seal.Description = "I am a seal.";
+            seal.Quantity = 7;
+
+            var fish = new Animal();
+            fish.Name = "Fish";
+            fish.Description = "I am a fish.";
+            fish.Quantity = 30;
+
+            zoo[0] = lion;
+            zoo[1] = tiger;
+            zoo[2] = seal ;
+            zoo[3] = fish;
+
+            Console.WriteLine("Compiled successfully");
+            Console.WriteLine(zoo[0].Name + zoo[1].Name + zoo[2].Name + zoo[3].Name);
             //instance method change
-            lion.addQuantity(5);
-            lion.removeQuantity(8);
-            Console.WriteLine(lion.Name + " has " + lion.illnesses[0]);
             /*
             //event
             var animalLoad = new LoadAnimal();

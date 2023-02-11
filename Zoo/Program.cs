@@ -12,16 +12,25 @@ namespace Zoo
         string Name { get; set; }
         string Description { get; set; }
         int Quantity { get; set; }
+        public string[] illnesses { get; set; }
+
         public void addQuantity(int q);
         public void removeQuantity(int q);
-        public delegate void AnimalEventHandler(object source, EventArgs args);
+        
     }
-    class Animal : IAnimal
+    public class Animal : IAnimal
     {
         //properties
         public string Name { get; set; } = "";
         public string Description { get; set; } = "";
         public int Quantity { get; set; } = 0;
+        public string[] illnesses { get; set; } = new string[100];
+
+        public string this[int i]
+        {
+            get { return illnesses[i]; }
+            set { illnesses[i] = value; }
+        }
 
         //instance methods
         public void addQuantity(int q)
@@ -36,7 +45,9 @@ namespace Zoo
                 Console.WriteLine("There are no " + Name+'s' + " in the zoo.");
             }
         }
+
     }
+    /*
     public class LoadAnimal
     {
         //Delegate
@@ -68,26 +79,29 @@ namespace Zoo
             Console.WriteLine("Animal was placed into enclosure.");
         }
     }
-
+    */
     class Program
     {
         static void Main(string[] args)
         {   
             //class declarations
             var lion = new Animal();
-            var animalLoad = new LoadAnimal();
-            var animalEntered = new animalEntered();
             //property definitions
             lion.Name = "Lion";
             lion.Description = "I am a lion.";
             lion.Quantity = 3;
-
+            lion.illnesses[0] = "none";
             //instance method change
             lion.addQuantity(5);
             lion.removeQuantity(8);
-
+            Console.WriteLine(lion.Name + " has " + lion.illnesses[0]);
+            /*
+            //event
+            var animalLoad = new LoadAnimal();
+            var animalEntered = new animalEntered();
             animalLoad.animaltransport += animalEntered.animalImport();
-            animalLoad.waitAnimal(animal);
+            animalLoad.waitAnimal(lion);
+            */
         }
     }
 }
